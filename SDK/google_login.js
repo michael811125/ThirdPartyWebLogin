@@ -64,7 +64,7 @@ function Google() {
         );
     }
 
-	//Google登入成功後可以透過API傳送資料至Server.
+    //Google登入成功後可以透過API傳送資料至Server.
     Google.isLoginWithGoogle = function (response) {
 
         if (CC_DEBUG) console.log(response);
@@ -73,7 +73,7 @@ function Google() {
 
         if (response.Ca !== undefined) {
             localStorage.setItem("googleResponse", JSON.stringify(response));
-			//window.location = redirectURL;
+            //window.location = redirectURL;
             //傳送API至Server的地方
         }
     }

@@ -158,7 +158,7 @@ function Facebook(isManual = false) {
         alert("Facebook logged in successfully.");
 
         if (response.email !== undefined) {
-			localStorage.setItem("fbResponse", JSON.stringify(response));
+            localStorage.setItem("fbResponse", JSON.stringify(response));
             //window.location = redirectURL;
             //傳送API至Server的地方
         }
