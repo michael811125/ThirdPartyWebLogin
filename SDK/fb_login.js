@@ -52,8 +52,14 @@ function Facebook(isManual = false) {
         return Facebook.status;
     }
 
+    //取得FB已連線登入並同意授權後, response使用者資料.
+    this.getResponse = function () {
+        let responseJson = JSON.parse(localStorage.getItem("fbResponse"));
+        return responseJson;
+    }
+
     //透過FB SDK與FB進行授權與溝通的動作, 預設為[自動登入].
-    this.loginWithFacebook = function (cb) {
+    this.loginWithFacebook = function () {
 
         //跳轉道FB輸入帳密前, 先記錄當前的URL.
         Facebook.setCurrentLocationURL();
@@ -90,7 +96,7 @@ function Facebook(isManual = false) {
                         }, function (response) {
                             //這邊的response就是FB回傳給你的資料.
                             //再將回傳的資料送入API.
-                            Facebook.isLoginWithFacebook(response, cb);
+                            Facebook.isLoginWithFacebook(response);
                         });
                     }
                 }, {
@@ -135,27 +141,26 @@ function Facebook(isManual = false) {
                         fields: 'id, name, email, last_name, first_name, picture, gender'
                     }, function (response) {
                         //這邊的response就是FB回傳給你的資料.
-                        //再將回傳的資料送入API.
-                        Facebook.isLoginWithFacebook(response, cb);
+                        //再將回傳的資料送入API.	
+                        Facebook.isLoginWithFacebook(response);
                     });
                 }
             });
         }
     }
 
-    //isl透過FB登入的API.
-    Facebook.isLoginWithFacebook = function (response, cb) {
+    //FB登入成功後可以透過API傳送資料至Server.
+    Facebook.isLoginWithFacebook = function (response) {
 
         if (CC_DEBUG) console.log(response);
 
         //非同步(Asynchronous), 先通知使用者登入成功, 這段期間也會送資料到API.
-        // alert("Facebook登入成功");
+        alert("Facebook logged in successfully.");
 
         if (response.email !== undefined) {
-            ThirdPartyFacebook.storeFacebookResponse(response);
-            if (cb != null) cb();
-            // window.location = redirectURL;
-            // 傳送API地方
+			localStorage.setItem("fbResponse", JSON.stringify(response));
+            //window.location = redirectURL;
+            //傳送API至Server的地方
         }
     }
 
